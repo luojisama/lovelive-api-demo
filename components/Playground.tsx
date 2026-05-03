@@ -85,7 +85,8 @@ export function Playground() {
 
     const path = buildPath(active, pathValues);
     const query = buildQuery(active, queryValues);
-    const browserUrl = `${path}${query}`;
+    // 浏览器走同源代理 /api/v1/...，Edge Function 再转发到上游
+    const browserUrl = `/api${path}${query}`;
     const realUrl = `${UPSTREAM_DISPLAY}${path}${query}`;
 
     setLoading(true);

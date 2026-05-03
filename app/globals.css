@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-50: #fff1f7;
+  --color-brand-100: #ffe0ec;
+  --color-brand-200: #ffc2da;
+  --color-brand-300: #ff9bc1;
+  --color-brand-400: #ff6da3;
+  --color-brand-500: #ff4287;
+  --color-brand-600: #ed1f6c;
+  --color-brand-700: #c5125a;
+  --color-brand-800: #9c104c;
+  --color-brand-900: #7c1142;
+}
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  background:
+    radial-gradient(at 20% 10%, rgba(255, 154, 192, 0.25), transparent 55%),
+    radial-gradient(at 80% 0%, rgba(186, 154, 255, 0.22), transparent 55%),
+    radial-gradient(at 50% 100%, rgba(255, 200, 220, 0.18), transparent 60%),
+    #fff7fb;
+  color: #1f1424;
+}
+
+.dark body {
+  background:
+    radial-gradient(at 20% 10%, rgba(255, 80, 140, 0.18), transparent 55%),
+    radial-gradient(at 80% 0%, rgba(140, 80, 220, 0.18), transparent 55%),
+    radial-gradient(at 50% 100%, rgba(180, 60, 120, 0.12), transparent 60%),
+    #0e0a14;
+  color: #f1e8f3;
+}
+
+::selection {
+  background: var(--color-brand-300);
+  color: #1f1424;
+}
+
+/* 简易 JSON 高亮 */
+.json-key {
+  color: #c5125a;
+}
+.dark .json-key {
+  color: #ff9bc1;
+}
+.json-string {
+  color: #2563eb;
+}
+.dark .json-string {
+  color: #93c5fd;
+}
+.json-number {
+  color: #b45309;
+}
+.dark .json-number {
+  color: #fbbf24;
+}
+.json-bool {
+  color: #15803d;
+}
+.dark .json-bool {
+  color: #86efac;
+}
+.json-null {
+  color: #6b7280;
+}
+
+/* 滚动条 */
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 66, 135, 0.35);
+  border-radius: 3px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}

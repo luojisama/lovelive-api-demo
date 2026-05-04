@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Code2, LayoutGrid, Loader2, Copy, CheckCircle2, AlertCircle } from "lucide-react";
 import type { Endpoint } from "@/lib/endpoints";
-import type { Character, EventItem, MusicItem } from "@/lib/types";
+import type { CardItem, Character, EventItem, MusicItem } from "@/lib/types";
 import { JsonView } from "./JsonView";
-import { CharacterCard, EventCard, MusicCard } from "./Cards";
+import { CardFace, CharacterCard, EventCard, MusicCard } from "./Cards";
 
 interface Props {
   endpoint: Endpoint;
@@ -63,8 +63,8 @@ function PrettyView({ endpoint, data }: { endpoint: Endpoint; data: unknown }) {
       if (list.length === 0) return <EmptyHint />;
       return (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {list.map((c) => (
-            <CharacterCard key={c.id ?? Math.random()} c={c} />
+          {list.map((c, index) => (
+            <CharacterCard key={c.id ?? `character-${index}`} c={c} />
           ))}
         </div>
       );
@@ -79,8 +79,8 @@ function PrettyView({ endpoint, data }: { endpoint: Endpoint; data: unknown }) {
       if (list.length === 0) return <EmptyHint />;
       return (
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-          {list.map((e) => (
-            <EventCard key={e.id ?? Math.random()} e={e} />
+          {list.map((e, index) => (
+            <EventCard key={e.id ?? `event-${index}`} e={e} />
           ))}
         </div>
       );
@@ -95,8 +95,8 @@ function PrettyView({ endpoint, data }: { endpoint: Endpoint; data: unknown }) {
       if (list.length === 0) return <EmptyHint />;
       return (
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-          {list.map((m) => (
-            <MusicCard key={m.id ?? Math.random()} m={m} />
+          {list.map((m, index) => (
+            <MusicCard key={m.id ?? `music-${index}`} m={m} />
           ))}
         </div>
       );
@@ -105,6 +105,11 @@ function PrettyView({ endpoint, data }: { endpoint: Endpoint; data: unknown }) {
       const m = extractItem(data) as MusicItem | null;
       if (!m) return <EmptyHint />;
       return <MusicCard m={m} />;
+    }
+    case "card": {
+      const card = extractItem(data) as CardItem | null;
+      if (!card) return <EmptyHint />;
+      return <CardFace card={card} />;
     }
     default:
       return <JsonView data={data} />;

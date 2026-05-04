@@ -24,7 +24,7 @@ export type Endpoint = {
   /** 简短描述 */
   description: string;
   /** 渲染结果时使用的卡片样式 */
-  resultKind: "characters" | "character" | "events" | "event" | "music" | "musicItem" | "raw";
+  resultKind: "characters" | "character" | "events" | "event" | "music" | "musicItem" | "card" | "raw";
 };
 
 export const SERIES_OPTIONS = [
@@ -81,8 +81,14 @@ const MUSIC_SOURCE_OPTIONS = [
 
 const CARD_GAME_OPTIONS = [
   { label: "sif", value: "sif" },
-  { label: "sifas", value: "sifas" },
   { label: "sif2", value: "sif2" },
+];
+
+const CARD_RARITY_OPTIONS = [
+  { label: "（不限）", value: "" },
+  { label: "R", value: "R" },
+  { label: "SR", value: "SR" },
+  { label: "UR", value: "UR" },
 ];
 
 export const ENDPOINTS: Endpoint[] = [
@@ -211,8 +217,8 @@ export const ENDPOINTS: Endpoint[] = [
     label: "随机卡面",
     method: "GET",
     pathTemplate: "/v1/cards/random",
-    description: "0.1 版本仅预留接口形状，未接入的游戏会返回 501。",
-    resultKind: "raw",
+    description: "随机获取 SIF 或 SIF2 卡面；SIF 来自 School Idol Tomodachi，SIF2 来自 Idol Story。",
+    resultKind: "card",
     queryParams: [
       {
         name: "game",
@@ -222,8 +228,8 @@ export const ENDPOINTS: Endpoint[] = [
         defaultValue: "sif",
         required: true,
       },
-      { name: "character", label: "角色（预留）", placeholder: "可选" },
-      { name: "rarity", label: "稀有度（预留）", placeholder: "可选" },
+      { name: "character", label: "角色", placeholder: "例如：Kotori / 真姫 / Shizuku" },
+      { name: "rarity", label: "稀有度", type: "select", options: CARD_RARITY_OPTIONS },
     ],
   },
 ];

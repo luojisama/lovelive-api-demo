@@ -4,7 +4,7 @@
 
 - 框架：Next.js 16 (App Router) + React 19 + Tailwind 4
 - 主题：next-themes 暗色/亮色切换
-- 上游：`http://llapi.shiro.team`，通过 `/api/v1/*` 反向代理（解决 CORS 与 mixed content）
+- 上游：`http://llapi.shiro.team`，通过 `/api/v1/*` 反向代理（解决 JSON、图片、CORS 与 mixed content）
 
 ## 本地开发
 
@@ -16,7 +16,7 @@ pnpm dev
 打开 <http://localhost:3000>。
 
 页面结构很简单：左侧是接口列表，右侧是参数表单和响应展示。   
-所有参数都能自定义输入：今日生日支持选时区，活动支持起止日期/团体/类型/来源，歌曲支持关键字/团体/演唱者/发售日等等。
+所有参数都能自定义输入：今日生日支持选时区，活动支持起止日期/团体/类型/来源，歌曲支持关键字/团体/演唱者/发售日，随机卡面支持 SIF/SIF2、角色名和稀有度。
 
 ## 反向代理是怎么工作的
 
@@ -30,6 +30,8 @@ pnpm dev
 ```text
 浏览器 ──HTTPS──> Vercel /api/v1/characters ──HTTP──> llapi.shiro.team/v1/characters
 ```
+
+代理会保留图片二进制响应，并把 JSON 里的 `http://llapi.shiro.team/v1/*` 链接重写为同源 `/api/v1/*`。这样音乐封面 `coverUrl` 和封面代理图不会在 HTTPS 页面里被 mixed content 拦截。
 
 如果以后上游换域名，改一下环境变量就行：
 
@@ -60,7 +62,7 @@ lovelive-api-demo/
 │   ├── Playground.tsx              # 主组件，左右两栏
 │   ├── EndpointForm.tsx            # 数据驱动的参数表单
 │   ├── ResultPanel.tsx             # 响应展示（卡片 / 原始 JSON 切换）
-│   ├── Cards.tsx                   # 角色 / 活动 / 歌曲 卡片
+│   ├── Cards.tsx                   # 角色 / 活动 / 歌曲 / 卡面 卡片
 │   ├── JsonView.tsx                # JSON 高亮
 │   └── ThemeToggle.tsx
 ├── lib/

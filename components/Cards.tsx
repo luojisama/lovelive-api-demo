@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Cake, CalendarRange, Disc3, ExternalLink, MapPin, Music2, Users } from "lucide-react";
+import { Cake, CalendarRange, Disc3, ExternalLink, Gamepad2, ImageIcon, MapPin, Music2, Sparkles, Users } from "lucide-react";
 import type {
+  CardItem,
   Character,
   CharacterBirthday,
   EventItem,
@@ -242,8 +243,108 @@ export function MusicCard({ m }: { m: MusicItem }) {
             <span className="truncate font-mono">{m.id}</span>
             <ExtLink href={m.sourceUrl}>官方页</ExtLink>
           </div>
+          {m.coverOriginalUrl && m.coverOriginalUrl !== m.coverUrl && (
+            <div className="mt-1 text-[10px] text-zinc-400">
+              封面经同源代理加载，原始图保留在 JSON 的 coverOriginalUrl。
+            </div>
+          )}
         </div>
       </div>
+    </div>
+  );
+}
+
+export function CardFace({ card }: { card: CardItem }) {
+  const normal = card.images?.card;
+  const idolized = card.images?.idolized;
+  const icon = card.images?.iconIdolized || card.images?.icon;
+  const badges = [card.game.toUpperCase(), card.rarity, card.attribute].filter(Boolean);
+
+  return (
+    <div className="rounded-2xl border border-brand-100/70 bg-white/80 p-4 shadow-sm transition hover:shadow-md dark:border-brand-900/40 dark:bg-zinc-900/60">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-[minmax(180px,260px)_1fr]">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-1">
+          <CardImage src={normal} alt={card.title || card.id} label="普通" />
+          <CardImage src={idolized} alt={`${card.title || card.id} idolized`} label="觉醒" />
+        </div>
+
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            {badges.map((badge) => (
+              <span
+                key={badge}
+                className="inline-flex items-center gap-1 rounded-full bg-brand-100 px-2 py-0.5 text-[11px] font-medium text-brand-700 dark:bg-brand-900/50 dark:text-brand-200"
+              >
+                <Sparkles className="h-3 w-3" />
+                {badge}
+              </span>
+            ))}
+          </div>
+
+          <h3 className="mt-2 text-base font-bold text-zinc-900 dark:text-zinc-100">
+            {card.title || card.collection || card.id}
+          </h3>
+
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
+            {icon && (
+              <span className="relative inline-block h-8 w-8 overflow-hidden rounded-full bg-brand-50 ring-1 ring-brand-100 dark:bg-zinc-800 dark:ring-brand-900/60">
+                <Image src={icon} alt={card.character || card.id} fill sizes="32px" unoptimized className="object-cover" />
+              </span>
+            )}
+            {card.character && (
+              <span className="inline-flex items-center gap-1">
+                <Users className="h-3 w-3" />
+                {card.character}
+                {card.characterJa ? ` / ${card.characterJa}` : ""}
+              </span>
+            )}
+            {card.releaseDate && (
+              <span className="inline-flex items-center gap-1">
+                <CalendarRange className="h-3 w-3" />
+                {card.releaseDate}
+              </span>
+            )}
+          </div>
+
+          {card.collection && (
+            <div className="mt-2 text-xs text-zinc-500">系列：{card.collection}</div>
+          )}
+
+          <div className="mt-4 grid grid-cols-1 gap-2 text-xs text-zinc-600 dark:text-zinc-400 sm:grid-cols-2">
+            {card.images?.transparent && <ExtLink href={card.images.transparent}>透明卡面</ExtLink>}
+            {card.images?.transparentIdolized && <ExtLink href={card.images.transparentIdolized}>觉醒透明卡面</ExtLink>}
+            {normal && <ExtLink href={normal}>普通图</ExtLink>}
+            {idolized && <ExtLink href={idolized}>觉醒图</ExtLink>}
+          </div>
+
+          <div className="mt-4 flex items-center justify-between gap-3 text-[11px] text-zinc-500">
+            <span className="inline-flex min-w-0 items-center gap-1 truncate font-mono">
+              <Gamepad2 className="h-3 w-3 flex-shrink-0" />
+              {card.id}
+            </span>
+            <ExtLink href={card.sourceUrl}>来源</ExtLink>
+          </div>
+          {card.source && <div className="mt-1 font-mono text-[10px] text-zinc-400">{card.source}</div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CardImage({ src, alt, label }: { src?: string; alt: string; label: string }) {
+  return (
+    <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-brand-50 ring-1 ring-brand-100 dark:bg-zinc-800 dark:ring-brand-900/60">
+      {src ? (
+        <Image src={src} alt={alt} fill sizes="260px" unoptimized className="object-contain" />
+      ) : (
+        <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-brand-400">
+          <ImageIcon className="h-8 w-8" />
+          <span className="text-xs">{label}图缺失</span>
+        </div>
+      )}
+      <span className="absolute left-2 top-2 rounded bg-black/50 px-2 py-0.5 text-[10px] text-white">
+        {label}
+      </span>
     </div>
   );
 }

@@ -70,8 +70,34 @@ export interface MusicItem {
   albumTitle?: string;
   albumType?: string;
   coverUrl?: string;
+  coverOriginalUrl?: string;
+  coverSourceUrl?: string;
   releaseDate?: string;
   trackNumber?: number;
+  source?: string;
+  sourceUrl?: string;
+}
+
+export interface CardImages {
+  card?: string;
+  idolized?: string;
+  icon?: string;
+  iconIdolized?: string;
+  transparent?: string;
+  transparentIdolized?: string;
+}
+
+export interface CardItem {
+  id: string;
+  game: "sif" | "sif2";
+  title?: string;
+  character?: string;
+  characterJa?: string;
+  rarity?: string;
+  attribute?: string;
+  collection?: string;
+  releaseDate?: string;
+  images?: CardImages;
   source?: string;
   sourceUrl?: string;
 }
